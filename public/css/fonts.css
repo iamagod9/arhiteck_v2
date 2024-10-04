@@ -1,0 +1,79 @@
+@font-face {
+    font-family: 'MuseoSansCyrl100Italic';
+    src: url('../webfonts/MuseoSansCyrl100Italic.woff') format('woff'),
+        url('../webfonts/MuseoSansCyrl100Italic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: 100;
+}
+
+@font-face {
+    font-family: 'MuseoSansCyrl300Italic';
+    src: url('../webfonts/MuseoSansCyrl300Italic.woff') format('woff'),
+        url('../webfonts/MuseoSansCyrl300Italic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'MuseoSansCyrl500Italic';
+    src: url('../webfonts/MuseoSansCyrl500Italic.woff') format('woff'),
+        url('../webfonts/MuseoSansCyrl500Italic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'MuseoSansCyrl700Italic';
+    src: url('../webfonts/MuseoSansCyrl700Italic.woff') format('woff'),
+        url('../webfonts/MuseoSansCyrl700Italic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'MuseoSansCyrl900Italic';
+    src: url('../webfonts/MuseoSansCyrl900Italic.woff') format('woff'),
+        url('../webfonts/MuseoSansCyrl900Italic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: 900;
+}
+
+@font-face {
+    font-family: 'MuseoSansCyrl100';
+    src: url('../webfonts/MuseoSansCyrl100.woff') format('woff'),
+        url('../webfonts/MuseoSansCyrl100.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 100;
+}
+
+@font-face {
+    font-family: 'MuseoSansCyrl300';
+    src: url('../webfonts/MuseoSansCyrl300.woff') format('woff'),
+        url('../webfonts/MuseoSansCyrl300.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'MuseoSansCyrl500';
+    src: url('../webfonts/MuseoSansCyrl500.woff') format('woff'),
+        url('../webfonts/MuseoSansCyrl500.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'MuseoSansCyrl700';
+    src: url('../webfonts/MuseoSansCyrl700.woff') format('woff'),
+        url('../webfonts/MuseoSansCyrl700.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'MuseoSansCyrl900';
+    src: url('../webfonts/MuseoSansCyrl900.woff') format('woff'),
+        url('../webfonts/MuseoSansCyrl900.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 900;
+}
