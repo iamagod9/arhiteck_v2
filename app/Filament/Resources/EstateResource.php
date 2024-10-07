@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\Consultations\Resources\EstateViewingResource;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Get;
@@ -66,9 +67,8 @@ class EstateResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->searchable()
-                    ->label('id'),
+                tables\Columns\TextColumn::make('id')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -109,7 +109,10 @@ class EstateResource extends Resource
             ->filters([
                 //
             ])
+
             ->actions([
+                Tables\Actions\ViewAction::make()
+                    ->label('Посмотреть'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -131,6 +134,7 @@ class EstateResource extends Resource
     {
         return [
             'index' => Pages\ListEstates::route('/'),
+            // 'view' => Pages\ViewEstate::route('/{record}'),
             'create' => Pages\CreateEstate::route('/create'),
             'edit' => Pages\EditEstate::route('/{record}/edit'),
         ];

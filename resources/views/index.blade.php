@@ -210,18 +210,20 @@
       <div class="swiper swiper-reviews">
         <div class="swiper-wrapper">
           @foreach($feedbacks as $feedback)
-        <div class="swiper-slide text-center">
-        <div class="reviews-item box-shadow bg-body p-3 rounded-1">
-          <div class="reviews-item__stars mb-2">
-          @for($i = 0; $i < $feedback->stars; $i++)
-        <i class="fa-solid fa-star"></i>
-      @endfor
-          </div>
+        @if($feedback->is_published)
+      <div class="swiper-slide text-center">
+      <div class="reviews-item box-shadow bg-body p-3 rounded-1">
+        <div class="reviews-item__stars mb-2">
+        @for($i = 0; $i < $feedback->stars; $i++)
+      <i class="fa-solid fa-star"></i>
+    @endfor
+        </div>
 
-          <div class="reviews-item__name mb-2">{{ $feedback->name }}</div>
-          <div class="reviews-item__message">{{ $feedback->comment }}</div>
-        </div>
-        </div>
+        <div class="reviews-item__name mb-2">{{ $feedback->name }}</div>
+        <div class="reviews-item__message">{{ $feedback->comment }}</div>
+      </div>
+      </div>
+    @endif
       @endforeach
 
         </div>

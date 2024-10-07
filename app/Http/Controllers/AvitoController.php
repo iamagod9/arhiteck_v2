@@ -37,7 +37,7 @@ class AvitoController extends Controller
     public function area()
     {
         $estates = Estate::whereHas('type', function (Builder $builder) {
-            $builder->where('name', "Участки");
+            $builder->where('name', "Участок");
         })->get();
 
         return response()->view('avito.area', compact('estates'))->header('Content-Type', 'text/xml');

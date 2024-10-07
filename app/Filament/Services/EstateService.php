@@ -37,7 +37,7 @@ class EstateService
                     ->image()
                     ->imageEditor()
                     ->imageEditorEmptyFillColor('#879f94')
-                    ->maxSize(2048),
+                    ->maxSize(15360),
                 ])->columns(1)
                 ->columnSpan(2),
             ])
@@ -855,13 +855,13 @@ class EstateService
                 'Альтернативная' => 'Альтернативная',
               ])
               ->label('Тип сделки'),
-            Forms\Components\Select::make('status')
+            Forms\Components\Select::make('category')
               ->options([
                 'Квартира' => 'Квартира',
                 'Апартаменты' => 'Апартаменты',
               ])
               ->required()
-              ->label('Статус недвижимости'),
+              ->label('Категория недвижимости'),
             Forms\Components\Select::make('renovation')
               ->required()
               ->options([
@@ -917,6 +917,7 @@ class EstateService
               ])
               ->label('Балкон и/или лоджия'),
             Forms\Components\Select::make('lease_appliances')
+              ->multiple()
               ->options([
                 'Кондиционер' => 'Кондиционер',
                 'Холодильник' => 'Холодильник',

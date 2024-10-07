@@ -55,7 +55,7 @@ return new class extends Migration {
             $table->string('address')->maxLength(255)->nullable();
             $table->string('property_rights')->nullable();
             $table->string('decoration')->nullable();
-            $table->string('lease_appliances')->nullable();
+            $table->json('lease_appliances')->nullable();
             $table->string('video_file_url')->nullable();
             $table->string('repair_additionally')->nullable();
             $table->json('in_house')->nullable();

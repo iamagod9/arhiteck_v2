@@ -46,7 +46,8 @@
           </p>
 
           <h4 class="mb-3">{{ $estate->rooms }}-комн. кв., {{ $estate->square }} м²,
-            {{ $estate->floor }}/{{ $estate->total_floor }} эт.</h4>
+            {{ $estate->floor }}/{{ $estate->total_floor }} эт.
+          </h4>
 
           <p class="text-secondary mb-0">{{ $estate->city }}, р-н {{ $estate->district }}, {{ $estate->street }}</p>
         </div>

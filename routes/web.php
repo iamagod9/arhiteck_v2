@@ -20,3 +20,6 @@ Route::get("/estates/{estate}", [EstateController::class, "show"])->name("estate
 Route::post("/estate-viewing", [EstateController::class, "viewing"])->name("estate.viewing");
 
 Route::get('/avito-new.xml', [AvitoController::class, 'newBuilding']);
+Route::get('/avito-secondary.xml', [AvitoController::class, 'secondaryBuilding']);
+Route::get('/avito-area.xml', [AvitoController::class, 'area']);
+Route::get('/avito-house.xml', [AvitoController::class, 'houses']);

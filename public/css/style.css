@@ -63,6 +63,19 @@ h6 {
 .nav-link:focus::after {
     width: 100%;
 }
+.general-link {
+    color: white;
+    background-color: #ff7700;
+    border-radius: 15px;
+    border: #ff7700 solid 1px;
+    padding: 10px 20px 10px 20px;
+}
+
+.general-link:hover {
+    color: #ff7700;
+    background-color: white;
+}
+
 .pagination {
     --bs-pagination-active-bg: #ff7700;
     --bs-pagination-color: var(--bs-pagination-active-bg);

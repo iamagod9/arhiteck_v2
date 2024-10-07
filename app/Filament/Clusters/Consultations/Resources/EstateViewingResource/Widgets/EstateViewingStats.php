@@ -30,9 +30,9 @@ class EstateViewingStats extends BaseWidget
     $sevenDaysAgo = Carbon::now()->subDays(7);
 
     return [
-      Stat::make('Запланировано визитов', $this->getPageTableQuery()->count()),
-      Stat::make('Визитов сегодня', $this->getPageTableQuery()->where('date', now()->format('Y-m-d'))->count()),
-      Stat::make('Визитов на этой неделе', $this->getPageTableQuery()->where('date', '>=', $sevenDaysAgo)->count()),
+      Stat::make('Запланировано визитов', $this->getPageTableQuery()->where('status', 'Новая')->count()),
+      Stat::make('Визитов сегодня', $this->getPageTableQuery()->where('status', 'Новая')->where('date', now()->format('Y-m-d'))->count()),
+      Stat::make('Визитов на этой неделе', $this->getPageTableQuery()->where('status', 'Новая')->where('date', '>=', $sevenDaysAgo)->count()),
     ];
   }
 }
