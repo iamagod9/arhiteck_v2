@@ -22,27 +22,39 @@ class StoreConsultationRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name_estate_consultation' => ['required_if:is_estate,1', 'string', 'max:255'],
+            'phone_estate_consultation' => ['required_if:is_estate,1', 'string', 'min:14', 'max:18'],
             'name_modal_feedback' => ['required_if:is_modal,1', 'string', 'max:255'],
-            'phone_modal_feedback' => ['required_if:is_modal,1', 'string', 'max:255'],
+            'phone_modal_feedback' => ['required_if:is_modal,1', 'string', 'min:14', 'max:18'],
             'name' => ['required_if:is_modal,0', 'string', 'max:255'],
-            'phone' => ['required_if:is_modal,0', 'string', 'max:18'],
+            'phone' => ['required_if:is_modal,0', 'string', 'min:14', 'max:18'],
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array<string, string>
-     */
-    // public function messages(): array
-    // {
-    //     return [
-    //         'name.required' => 'Поле "Ваше имя" обязательно',
-    //         'name.string' => 'Поле "Ваше имя" должно быть строкой',
-    //         'name.max' => 'У поля "Ваше имя" макс.длина 255 символом',
-    //         'phone.required' => 'Поле "Ваш номер" обязательно',
-    //         'phone.numeric' => 'Поле "Ваш номер" должно быть числом',
-    //         'phone.digits' => 'У поля "Ваш номер" должно быть 11 символом',
-    //     ];
-    // }
+    public function messages(): array
+    {
+        return [
+            'name.required_if' => 'Укажите, пожалуйста, корректное имя.',
+            'name.string' => 'Имя должно быть строкой.',
+            'name.max' => 'Вы указали слишком длинное имя.',
+            'name_modal_feedback.required_if' => 'Укажите, пожалуйста, корректное имя.',
+            'name_modal_feedback.string' => 'Имя должно быть строкой.',
+            'name_modal_feedback.max' => 'Вы указали слишком длинное имя.',
+            'name_estate_consultation.required_if' => 'Укажите, пожалуйста, корректное имя.',
+            'name_estate_consultation.string' => 'Имя должно быть строкой.',
+            'name_estate_consultation.max' => 'Вы указали слишком длинное имя.',
+            'phone.required_if' => 'Укажите, пожалуйста, корректный номер телефона.',
+            'phone.string' => 'Номер должен быть строкой.',
+            'phone.min' => 'Неверный формат номера.',
+            'phone.max' => 'Неверный формат номера.',
+            'phone_modal_feedback.required_if' => 'Укажите, пожалуйста, корректный номер телефона.',
+            'phone_modal_feedback.string' => 'Номер должен быть строкой.',
+            'phone_modal_feedback.min' => 'Неверный формат номера.',
+            'phone_modal_feedback.max' => 'Неверный формат номера.',
+            'phone_estate_consultation.required_if' => 'Укажите, пожалуйста, корректный номер телефона.',
+            'phone_estate_consultation.string' => 'Номер должен быть строкой.',
+            'phone_estate_consultation.min' => 'Неверный формат номера.',
+            'phone_estate_consultation.max' => 'Неверный формат номера.',
+        ];
+    }
 }

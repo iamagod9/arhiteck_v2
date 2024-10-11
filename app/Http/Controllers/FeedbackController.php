@@ -19,12 +19,4 @@ class FeedbackController extends Controller
 
         return response()->json(['message' => 'Ваш отзыв получен и будет опубликован в ближайшее время.'], 201);
     }
-
-    public function index()
-    {
-        $feedbacks = Feedback::where('is_published', true)->get();
-        dump($feedbacks);
-
-        return response()->json($feedbacks);
-    }
 }

@@ -45,9 +45,9 @@ class EstateController extends Controller
         return view("estate.index", compact('estates', 'estates_total', 'types', 'type_slug', 'rooms', 'from_price', 'to_price', 'from_square', 'to_square'));
     }
 
-    public function show(Estate $estate)
+    public function show(Estate $estate, EstateType $type)
     {
-        return view("estate.show", compact('estate'));
+        return view("estate.show", compact('estate', 'type'));
     }
 
     public function viewing(EstateViewingRequest $request)

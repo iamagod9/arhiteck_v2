@@ -14,20 +14,9 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $estates = Estate::paginate(9)->withQueryString();
-        $feedbacks = Feedback::all();
+        $feedbacks = Feedback::where('is_published', 1)->get()->sortByDesc('created_at');
         $types = EstateType::all();
 
         return view('index', compact('feedbacks', 'estates', 'types'));
-    }
-
-    public function show(Request $request)
-    {
-    }
-
-    public function store(StoreFeedbackRequest $request)
-    {
-        Feedback::create(['name' => $request->feedback_name, 'phone' => $request->feedback_phone, 'comment' => $request->comment]);
-
-        return to_route('home');
     }
 }

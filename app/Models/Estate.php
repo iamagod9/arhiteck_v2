@@ -54,6 +54,8 @@ class Estate extends Model
         'view_from_windows',
         'parking_type',
         'address',
+        'lon',
+        'lat',
         'lease_appliances',
         'repair_additionally',
         'in_house',
@@ -91,7 +93,6 @@ class Estate extends Model
         'nd_additionally' => 'array',
         'in_house' => 'array',
         'ss_additionally' => 'array',
-        'lease_appliances' => 'array',
         'furniture' => 'array',
     ];
 
@@ -104,11 +105,6 @@ class Estate extends Model
     {
         return $this->belongsTo(EstateType::class, 'estate_type_id', 'id');
     }
-
-    // public function estate_viewings(): HasMany
-    // {
-    //     return $this->hasMany(EstateViewing::class);
-    // }
 
     public function images(): HasMany
     {

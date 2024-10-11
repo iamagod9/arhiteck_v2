@@ -4,9 +4,31 @@ namespace App\Filament\Services;
 
 use Filament\Forms;
 use Filament\Forms\Components\Wizard;
+use Filament\Forms\Set;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\HtmlString;
 
 class EstateService
 {
+  public static function getPoints($search, Set $set)
+  {
+    if (empty($search)) {
+      return [];
+    }
+    $response = Http::get('https://catalog.api.2gis.com/3.0/items/geocode', [
+      'q' => $search,
+      'type' => 'building',
+      'fields' => 'items.point',
+      'key' => 'b0394cab-b1f6-45a8-b6e7-2e205fb132fd'
+    ]);
+    $json = $response->json();
+    if (empty($json['result']['items'])) {
+      return [];
+    }
+    $set('lon', $json['result']['items'][0]['point']['lon']);
+    $set('lat', $json['result']['items'][0]['point']['lat']);
+  }
+
   public static function getMedia(): array
   {
     return [
@@ -117,7 +139,14 @@ class EstateService
             Forms\Components\TextInput::make('address')
               ->required()
               ->maxLength(255)
-              ->label('Адрес'),
+              ->label('Адрес')->live(debounce: 500)->afterStateUpdated(fn($state, Set $set) => self::getPoints($state, $set))
+              ->columnSpanFull(),
+            Forms\Components\TextInput::make('lon')->hidden(),
+            Forms\Components\TextInput::make('lat')->hidden(),
+            Forms\Components\Placeholder::make('map')
+              ->label('Карта')
+              ->content(fn($get) => new HtmlString(!empty ($get('lat')) && !empty ($get('lon')) ? "<img src='https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$get('lat')},{$get('lon')}' style='width: 100%;'/>" : 'Здесь отобразится адрес на карте'))
+              ->columnSpanFull(),
             Forms\Components\Select::make('operation_type')
               ->options([
                 'Продам' => 'Продам',
@@ -378,7 +407,14 @@ class EstateService
             Forms\Components\TextInput::make('address')
               ->required()
               ->maxLength(255)
-              ->label('Адрес'),
+              ->label('Адрес')->live(debounce: 500)->afterStateUpdated(fn($state, Set $set) => self::getPoints($state, $set))
+              ->columnSpanFull(),
+            Forms\Components\TextInput::make('lon')->hidden(),
+            Forms\Components\TextInput::make('lat')->hidden(),
+            Forms\Components\Placeholder::make('map')
+              ->label('Карта')
+              ->content(fn($get) => new HtmlString(!empty ($get('lat')) && !empty ($get('lon')) ? "<img src='https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$get('lat')},{$get('lon')}' style='width: 100%;'/>" : 'Здесь отобразится адрес на карте'))
+              ->columnSpanFull(),
             Forms\Components\Select::make('user_id')
               ->required()
               ->relationship('user', 'name')
@@ -486,7 +522,14 @@ class EstateService
             Forms\Components\TextInput::make('address')
               ->required()
               ->maxLength(255)
-              ->label('Адрес'),
+              ->label('Адрес')->live(debounce: 500)->afterStateUpdated(fn($state, Set $set) => self::getPoints($state, $set))
+              ->columnSpanFull(),
+            Forms\Components\TextInput::make('lon')->hidden(),
+            Forms\Components\TextInput::make('lat')->hidden(),
+            Forms\Components\Placeholder::make('map')
+              ->label('Карта')
+              ->content(fn($get) => new HtmlString(!empty ($get('lat')) && !empty ($get('lon')) ? "<img src='https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$get('lat')},{$get('lon')}' style='width: 100%;'/>" : 'Здесь отобразится адрес на карте'))
+              ->columnSpanFull(),
             Forms\Components\TextInput::make('operation_type')
               ->default('Продам')
               ->required()
@@ -752,7 +795,14 @@ class EstateService
             Forms\Components\TextInput::make('address')
               ->required()
               ->maxLength(255)
-              ->label('Адрес'),
+              ->label('Адрес')->live(debounce: 500)->afterStateUpdated(fn($state, Set $set) => self::getPoints($state, $set))
+              ->columnSpanFull(),
+            Forms\Components\TextInput::make('lon')->hidden(),
+            Forms\Components\TextInput::make('lat')->hidden(),
+            Forms\Components\Placeholder::make('map')
+              ->label('Карта')
+              ->content(fn($get) => new HtmlString(!empty ($get('lat')) && !empty ($get('lon')) ? "<img src='https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$get('lat')},{$get('lon')}' style='width: 100%;'/>" : 'Здесь отобразится адрес на карте'))
+              ->columnSpanFull(),
             Forms\Components\TextInput::make('operation_type')
               ->hidden()
               ->default('Продам')

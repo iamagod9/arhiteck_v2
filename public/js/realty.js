@@ -118,15 +118,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.querySelector('#mapModal')?.addEventListener('shown.bs.modal', (event) => {
+    document.querySelector('#mapModal')?.addEventListener('shown.bs.modal', async (event) => {
+        let target = event.target;
+        let lon = parseFloat(target.getAttribute('data-lon'));
+        let lat = parseFloat(target.getAttribute('data-lat'));
+
         const map = new mapgl.Map('map', {
-            center: [86.105262, 55.344986],
+            center: [lon, lat],
             zoom: 17,
             key: 'b0394cab-b1f6-45a8-b6e7-2e205fb132fd',
         });
 
         const marker = new mapgl.Marker(map, {
-            coordinates: [86.105262, 55.344986]
+            coordinates: map.getCenter(),
+            icon: '/img/marker.svg',
+            anchor: [20, 40]
         });
     });
 });

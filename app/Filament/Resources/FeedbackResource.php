@@ -46,7 +46,11 @@ class FeedbackResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->label('Телефон'),
-                        Forms\Components\Checkbox::make('is_published')
+                        Forms\Components\Toggle::make('is_published')
+                            ->onIcon('heroicon-m-check')
+                            ->offIcon('heroicon-m-x-mark')
+                            ->onColor('success')
+                            ->offColor('danger')
                             ->label('Опубликован'),
                     ])
 

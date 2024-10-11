@@ -1,4 +1,5 @@
 body {
+    --plyr-color-main: #ff7700;
     --swiper-theme-color: #ff7700;
     --swiper-pagination-bullet-size: 14px;
     --swiper-pagination-fraction-color: #ff7700;
@@ -63,17 +64,13 @@ h6 {
 .nav-link:focus::after {
     width: 100%;
 }
+
 .general-link {
     color: white;
     background-color: #ff7700;
     border-radius: 15px;
     border: #ff7700 solid 1px;
     padding: 10px 20px 10px 20px;
-}
-
-.general-link:hover {
-    color: #ff7700;
-    background-color: white;
 }
 
 .pagination {
@@ -115,11 +112,15 @@ h6 {
     height: 100%;
     border: var(--bs-border-width) solid var(--bs-border-color);
     border-radius: var(--bs-border-radius);
-    padding: 0 .75rem;
+    position: relative;
+}
+.feedback-stars:has(input.is-invalid) {
+    border-color: var(--bs-form-invalid-border-color);
 }
 .feedback-stars .feedback-stars__group {
     display: inline-flex;
     height: 100%;
+    padding: 0 .75rem;
 }
 .feedback-stars input {
     position: absolute;
@@ -333,7 +334,17 @@ h6 {
     -webkit-box-orient: vertical;
 }
 .reviews-item__stars {
+    display: flex;
+    justify-content: center;
     color: #ff7700;
+}
+.reviews-item__stars svg {
+    width: 20px;
+    height: 20px;
+    fill: rgba(255, 119, 0, 0.5);
+}
+.reviews-item__stars svg.active {
+    fill: #ff7700;
 }
 .review-textarea {
     min-height: 200px !important;

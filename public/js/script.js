@@ -3,6 +3,8 @@
 let showErrorFields = (errors) => {
     Object.keys(errors).forEach((name) => {
         let field = document.querySelector(`[name="${name}"]`);
+        let tooltip = field.nextElementSibling.nextElementSibling;
+        tooltip.textContent = errors[name];
         field?.classList?.add('is-invalid');
     })
 };

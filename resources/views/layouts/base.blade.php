@@ -11,22 +11,23 @@
   <link rel="stylesheet" href="{{ asset('css/fontawesome.all.min.css') }}" />
   <link rel="stylesheet" href="{{ asset('css/swiper-bundle.min.css') }}" />
   <link rel="stylesheet" href="{{ asset('css/lightgallery-bundle.min.css') }}" />
+  <link rel="stylesheet" href="{{ asset('css/plyr.css') }}" />
   <link rel="stylesheet" href="{{ asset('css/fonts.css') }}" />
   <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
   <link rel="stylesheet" href="{{ asset('css/responsive.css') }}" />
 </head>
 
 <body class="bg-body-tertiary">
-    @if (session('success'))
-        <script type="text/javascript">
-            document.addEventListener('DOMContentLoaded', () => {
-                swal({
-                    text: "{{ session('success') }}",
-                    icon: 'success'
-                });
-            })
-        </script>
-    @endif
+  @if (session('success'))
+    <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+      swal({
+      text: "{{ session('success') }}",
+      icon: 'success'
+      });
+    })
+    </script>
+  @endif
   @include("includes.header")
 
   <main class="main">

@@ -49,7 +49,7 @@
 
                         <div class="d-flex justify-content-between mb-3">
                             <p class="mb-0">{{ $estate->rooms == 0 ? 'Студия' : $estate->rooms . '-комн. кв.' }},
-                                {{ $estate->square }} м², {{ $estate->floor }}/{{ $estate->total_floor }} эт.
+                                {{ $estate->square }} м², {{ $estate->floor }}/{{ $estate->floors }} эт.
                             </p>
                         </div>
 
