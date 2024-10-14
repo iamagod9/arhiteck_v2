@@ -66,7 +66,7 @@
         </p>
 
         <h4 class="mb-3">{{ $estate->rooms }}-комн. кв., {{ $estate->square }} м²,
-        {{ $estate->floor }}/{{ $estate->total_floor }} эт.
+        {{ $estate->floor }}/{{ $estate->floors }} эт.
         </h4>
 
         <p class="text-secondary mb-0">{{ $estate->address }}</p>
@@ -89,28 +89,32 @@
         </div>
 
         <div class="details-left__property-item mb-1">
-          <p class="text-secondary mb-0">Ремонт</p>
-          <p class="mb-0">{{ $estate->repair }}</p>
-        </div>
-
-        <div class="details-left__property-item mb-1">
-          <p class="text-secondary mb-0">Год постройки</p>
-          <p class="mb-0">{{ $estate->year_build }}</p>
+          <p class="text-secondary mb-0">Тип дома</p>
+          <p class="mb-0">{{ $estate->house_type }}</p>
         </div>
 
         <div class="details-left__property-item mb-1">
           <p class="text-secondary mb-0">Этаж/Этажность</p>
-          <p class="mb-0">{{ $estate->floor }} из {{ $estate->total_floor }}</p>
-        </div>
-
-        <div class="details-left__property-item mb-1">
-          <p class="text-secondary mb-0">Стены</p>
-          <p class="mb-0">{{ $estate->walls }}</p>
+          <p class="mb-0">{{ $estate->floor }} / {{ $estate->floors }}</p>
         </div>
 
         <div class="details-left__property-item">
-          <p class="text-secondary mb-0">Площадь кухни</p>
-          <p class="mb-0">{{ $estate->square_kitchen }} м²</p>
+          <p class="text-secondary mb-0">Статус</p>
+          <p class="mb-0">{{ $estate->status }}</p>
+        </div>
+        </div>
+
+        <div class="details-left__property-flat">
+        <h5 class="mb-3">О квартире</h5>
+
+        <div class="details-left__property-item mb-1">
+          <p class="text-secondary mb-0">Отделка помещения</p>
+          <p class="mb-0">{{ $estate->decoration }}</p>
+        </div>
+
+        <div class="details-left__property-item mb-1">
+          <p class="text-secondary mb-0">Право собственности</p>
+          <p class="mb-0">{{ $estate->property_rights }}</p>
         </div>
         </div>
       </div>
@@ -123,7 +127,7 @@
       </p>
 
       <h4 class="mb-3">{{ $estate->rooms }}-комн. кв., {{ $estate->square }} м²,
-      {{ $estate->floor }}/{{ $estate->total_floor }} эт.
+      {{ $estate->floor }}/{{ $estate->floors }} эт.
       </h4>
 
       <p class="text-secondary mb-0">{{ $estate->address }}</p>
@@ -147,27 +151,41 @@
 
       <div class="details-left__property-item mb-1">
         <p class="text-secondary mb-0">Ремонт</p>
-        <p class="mb-0">{{ $estate->repair }}</p>
+        <p class="mb-0">{{ $estate->renovation }}</p>
       </div>
 
       <div class="details-left__property-item mb-1">
-        <p class="text-secondary mb-0">Год постройки</p>
-        <p class="mb-0">{{ $estate->year_build }}</p>
+        <p class="text-secondary mb-0">Тип дома</p>
+        <p class="mb-0">{{ $estate->house_type }}</p>
       </div>
 
       <div class="details-left__property-item mb-1">
         <p class="text-secondary mb-0">Этаж/Этажность</p>
-        <p class="mb-0">{{ $estate->floor }} из {{ $estate->total_floor }}</p>
+        <p class="mb-0">{{ $estate->floor }} / {{ $estate->floors }}</p>
       </div>
 
       <div class="details-left__property-item mb-1">
-        <p class="text-secondary mb-0">Стены</p>
-        <p class="mb-0">{{ $estate->walls }}</p>
+        <p class="text-secondary mb-0">Категория</p>
+        <p class="mb-0">{{ $estate->category }}</p>
       </div>
 
-      <div class="details-left__property-item">
+      </div>
+      <div class="details-left__property-flat">
+      <h5 class="mb-3">О квартире</h5>
+
+      <div class="details-left__property-item mb-1">
         <p class="text-secondary mb-0">Площадь кухни</p>
-        <p class="mb-0">{{ $estate->square_kitchen }} м²</p>
+        <p class="mb-0">{{ $estate->kitchen_space }} м2</p>
+      </div>
+
+      <div class="details-left__property-item mb-1">
+        <p class="text-secondary mb-0">Пассажирский лифт</p>
+        <p class="mb-0">{{ $estate->passenger_elevator }}</p>
+      </div>
+
+      <div class="details-left__property-item mb-1">
+        <p class="text-secondary mb-0">Грузовой лифт</p>
+        <p class="mb-0">{{ $estate->freight_elevator }}</p>
       </div>
       </div>
     </div>
@@ -181,7 +199,7 @@
     </p>
 
     <h4 class="mb-3">{{ $estate->rooms }}-комн. кв., {{ $estate->square }} м²,
-    {{ $estate->floor }}/{{ $estate->total_floor }} эт.
+    {{ $estate->floor }}/{{ $estate->floors }} эт.
     </h4>
 
     <p class="text-secondary mb-0">{{ $estate->address }}</p>
@@ -204,28 +222,37 @@
     </div>
 
     <div class="details-left__property-item mb-1">
+      <p class="text-secondary mb-0">Вид объекта</p>
+      <p class="mb-0">{{ $estate->object_type }}</p>
+    </div>
+
+    <div class="details-left__property-item mb-1">
+      <p class="text-secondary mb-0">Количество этажей</p>
+      <p class="mb-0">{{ $estate->floors }}</p>
+    </div>
+
+    <div class="details-left__property-item mb-1">
+      <p class="text-secondary mb-0">Право собственности</p>
+      <p class="mb-0">{{ $estate->property_rights }}</p>
+    </div>
+    </div>
+
+    <div class="details-left__property-flat">
+    <h5 class="mb-3">О квартире</h5>
+
+    <div class="details-left__property-item mb-1">
+      <p class="text-secondary mb-0">Материал стен</p>
+      <p class="mb-0">{{ $estate->walls_type }}</p>
+    </div>
+
+    <div class="details-left__property-item mb-1">
+      <p class="text-secondary mb-0">Статус участка</p>
+      <p class="mb-0">{{ $estate->land_status }}</p>
+    </div>
+
+    <div class="details-left__property-item mb-1">
       <p class="text-secondary mb-0">Ремонт</p>
-      <p class="mb-0">{{ $estate->repair }}</p>
-    </div>
-
-    <div class="details-left__property-item mb-1">
-      <p class="text-secondary mb-0">Год постройки</p>
-      <p class="mb-0">{{ $estate->year_build }}</p>
-    </div>
-
-    <div class="details-left__property-item mb-1">
-      <p class="text-secondary mb-0">Этаж/Этажность</p>
-      <p class="mb-0">{{ $estate->floor }} из {{ $estate->total_floor }}</p>
-    </div>
-
-    <div class="details-left__property-item mb-1">
-      <p class="text-secondary mb-0">Стены</p>
-      <p class="mb-0">{{ $estate->walls }}</p>
-    </div>
-
-    <div class="details-left__property-item">
-      <p class="text-secondary mb-0">Площадь кухни</p>
-      <p class="mb-0">{{ $estate->square_kitchen }} м²</p>
+      <p class="mb-0">{{ $estate->renovation }}</p>
     </div>
     </div>
   </div>
@@ -239,7 +266,7 @@
     </p>
 
     <h4 class="mb-3"> {{ $estate->square }} м²,
-    {{ $estate->floor }}/{{ $estate->total_floor }} эт.
+    {{ $estate->floor }}/{{ $estate->floors }} эт.
     </h4>
 
     <p class="text-secondary mb-0">{{ $estate->address }}</p>
@@ -339,9 +366,7 @@
             </li>
           </ul>
           <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#mapModal">
-            <img
-              src="https://static.maps.2gis.com/1.0?s=900,400&pt={{ $estate->lat }},{{ $estate->lon }}~u:https://i.postimg.cc/90Ykr5df/marker-1.png~a:0.5,1"
-              alt="Карта" class="img-fluid rounded-1" />
+            <img src="{{ asset($estate->preview_infrastructure_area_img) }}" alt="Карта" class="img-fluid rounded-1" />
           </button>
         </div>
       </div>

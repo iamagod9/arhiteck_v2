@@ -7,6 +7,7 @@ use Filament\Forms\Components\Wizard;
 use Filament\Forms\Set;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\HtmlString;
+use App\Models\Estate;
 
 class EstateService
 {
@@ -27,6 +28,7 @@ class EstateService
     }
     $set('lon', $json['result']['items'][0]['point']['lon']);
     $set('lat', $json['result']['items'][0]['point']['lat']);
+
   }
 
   public static function getMedia(): array
@@ -55,6 +57,7 @@ class EstateService
                   Forms\Components\FileUpload::make('url')
                     ->label('')
                     ->multiple()
+                    ->minFiles(1)
                     ->directory('img/estates')
                     ->image()
                     ->imageEditor()
@@ -79,6 +82,43 @@ class EstateService
             ->label('Видеоролик'),
         ])
         ->columnSpan(2),
+    ];
+  }
+
+  public static function getGeneral(): array
+  {
+    return [
+      Forms\Components\TextInput::make('id')
+        ->label('id')
+        ->hidden(),
+      Forms\Components\Textarea::make('description')
+        ->autofocus()
+        ->rows(10)
+        ->required()
+        ->maxLength(7500)
+        ->columnSpan(3)
+        ->label('Описание'),
+      Forms\Components\TextInput::make('address')
+        ->required()
+        ->maxLength(255)
+        ->label('Адрес')->live(debounce: 500)
+        ->afterStateUpdated(fn($state, Set $set) => self::getPoints($state, $set))
+        ->columnSpan(3),
+      Forms\Components\Hidden::make('lon')
+        ->dehydrated(),
+      Forms\Components\Hidden::make('lat')
+        ->dehydrated(),
+      Forms\Components\Placeholder::make('map')
+        ->label('Местоположение на карте')
+        ->content(fn($get) => new HtmlString("<img src='https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$get('lat')},{$get('lon')}~u:https://i.postimg.cc/90Ykr5df/marker-1.png~a:0.5,1' style='width: 100%;'/>"))
+        ->columnSpan(3)
+        ->hidden(fn($get) => empty ($get('lat')) || empty ($get('lon'))),
+      // Forms\Components\TextInput::make('contact_phone')
+      //   ->required()
+      //   ->tel()
+      //   ->placeholder('79876543219')
+      //   ->prefix('+')
+      //   ->label('Контактный телефон'),
     ];
   }
 
@@ -126,27 +166,7 @@ class EstateService
         Wizard\Step::make('Обязательные поля')
           ->icon('heroicon-o-shield-exclamation')
           ->schema([
-            Forms\Components\TextInput::make('id')
-              ->label('id')
-              ->hidden(),
-            Forms\Components\Textarea::make('description')
-              ->autofocus()
-              ->rows(10)
-              ->required()
-              ->maxLength(7500)
-              ->columnSpanFull()
-              ->label('Описание'),
-            Forms\Components\TextInput::make('address')
-              ->required()
-              ->maxLength(255)
-              ->label('Адрес')->live(debounce: 500)->afterStateUpdated(fn($state, Set $set) => self::getPoints($state, $set))
-              ->columnSpanFull(),
-            Forms\Components\TextInput::make('lon')->hidden(),
-            Forms\Components\TextInput::make('lat')->hidden(),
-            Forms\Components\Placeholder::make('map')
-              ->label('Карта')
-              ->content(fn($get) => new HtmlString(!empty ($get('lat')) && !empty ($get('lon')) ? "<img src='https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$get('lat')},{$get('lon')}' style='width: 100%;'/>" : 'Здесь отобразится адрес на карте'))
-              ->columnSpanFull(),
+            ...self::getGeneral(),
             Forms\Components\Select::make('operation_type')
               ->options([
                 'Продам' => 'Продам',
@@ -272,10 +292,6 @@ class EstateService
               ->label('Дата размещения объявления'),
             Forms\Components\DateTimePicker::make('date_end')
               ->label('Дата и время окончания размещения'),
-            Forms\Components\TextInput::make('contact_phone')
-              ->tel()
-              ->prefix('+')
-              ->label('Контактный телефон'),
             Forms\Components\Select::make('contact_method')
               ->default('По телефону и в сообщениях')
               ->options([
@@ -345,7 +361,6 @@ class EstateService
               ])
               ->label('Тип комнат'),
             Forms\Components\Select::make('bathroom_type')
-              ->multiple()
               ->options([
                 'Совмещённый' => 'Совмещённый',
                 'Раздельный' => 'Раздельный',
@@ -394,27 +409,7 @@ class EstateService
         Wizard\Step::make('Обязательные поля')
           ->icon('heroicon-o-shield-exclamation')
           ->schema([
-            Forms\Components\TextInput::make('id')
-              ->label('id')
-              ->hidden(),
-            Forms\Components\Textarea::make('description')
-              ->autofocus()
-              ->rows(10)
-              ->required()
-              ->maxLength(7500)
-              ->columnSpanFull()
-              ->label('Описание'),
-            Forms\Components\TextInput::make('address')
-              ->required()
-              ->maxLength(255)
-              ->label('Адрес')->live(debounce: 500)->afterStateUpdated(fn($state, Set $set) => self::getPoints($state, $set))
-              ->columnSpanFull(),
-            Forms\Components\TextInput::make('lon')->hidden(),
-            Forms\Components\TextInput::make('lat')->hidden(),
-            Forms\Components\Placeholder::make('map')
-              ->label('Карта')
-              ->content(fn($get) => new HtmlString(!empty ($get('lat')) && !empty ($get('lon')) ? "<img src='https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$get('lat')},{$get('lon')}' style='width: 100%;'/>" : 'Здесь отобразится адрес на карте'))
-              ->columnSpanFull(),
+            ...self::getGeneral(),
             Forms\Components\Select::make('user_id')
               ->required()
               ->relationship('user', 'name')
@@ -480,11 +475,6 @@ class EstateService
               ->label('Дата размещения объявления'),
             Forms\Components\DateTimePicker::make('date_end')
               ->label('Дата и время окончания размещения'),
-            Forms\Components\TextInput::make('contact_phone')
-              ->tel()
-              ->placeholder('79876543219')
-              ->prefix('+')
-              ->label('Контактный телефон'),
             Forms\Components\Select::make('contact_method')
               ->default('По телефону и в сообщениях')
               ->options([
@@ -509,27 +499,7 @@ class EstateService
         Wizard\Step::make('Обязательные поля')
           ->icon('heroicon-o-shield-exclamation')
           ->schema([
-            Forms\Components\TextInput::make('id')
-              ->label('id')
-              ->hidden(),
-            Forms\Components\Textarea::make('description')
-              ->autofocus()
-              ->rows(10)
-              ->required()
-              ->maxLength(7500)
-              ->columnSpanFull()
-              ->label('Описание'),
-            Forms\Components\TextInput::make('address')
-              ->required()
-              ->maxLength(255)
-              ->label('Адрес')->live(debounce: 500)->afterStateUpdated(fn($state, Set $set) => self::getPoints($state, $set))
-              ->columnSpanFull(),
-            Forms\Components\TextInput::make('lon')->hidden(),
-            Forms\Components\TextInput::make('lat')->hidden(),
-            Forms\Components\Placeholder::make('map')
-              ->label('Карта')
-              ->content(fn($get) => new HtmlString(!empty ($get('lat')) && !empty ($get('lon')) ? "<img src='https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$get('lat')},{$get('lon')}' style='width: 100%;'/>" : 'Здесь отобразится адрес на карте'))
-              ->columnSpanFull(),
+            ...self::getGeneral(),
             Forms\Components\TextInput::make('operation_type')
               ->default('Продам')
               ->required()
@@ -657,11 +627,6 @@ class EstateService
               ->label('Дата размещения объявления'),
             Forms\Components\DateTimePicker::make('date_end')
               ->label('Дата и время окончания размещения'),
-            Forms\Components\TextInput::make('contact_phone')
-              ->tel()
-              ->prefix('+')
-              ->placeholder('79876543219')
-              ->label('Контактный телефон'),
             Forms\Components\Select::make('contact_method')
               ->default('По телефону и в сообщениях')
               ->options([
@@ -752,7 +717,6 @@ class EstateService
               ])
               ->label('Парковка'),
             Forms\Components\Select::make('bathroom_type')
-              ->multiple()
               ->options([
                 'В доме' => 'В доме',
                 'На улице' => 'На улице',
@@ -782,27 +746,7 @@ class EstateService
         Wizard\Step::make('Обязательные поля')
           ->icon('heroicon-o-shield-exclamation')
           ->schema([
-            Forms\Components\TextInput::make('id')
-              ->label('id')
-              ->hidden(),
-            Forms\Components\Textarea::make('description')
-              ->autofocus()
-              ->rows(10)
-              ->required()
-              ->maxLength(7500)
-              ->columnSpanFull()
-              ->label('Описание'),
-            Forms\Components\TextInput::make('address')
-              ->required()
-              ->maxLength(255)
-              ->label('Адрес')->live(debounce: 500)->afterStateUpdated(fn($state, Set $set) => self::getPoints($state, $set))
-              ->columnSpanFull(),
-            Forms\Components\TextInput::make('lon')->hidden(),
-            Forms\Components\TextInput::make('lat')->hidden(),
-            Forms\Components\Placeholder::make('map')
-              ->label('Карта')
-              ->content(fn($get) => new HtmlString(!empty ($get('lat')) && !empty ($get('lon')) ? "<img src='https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$get('lat')},{$get('lon')}' style='width: 100%;'/>" : 'Здесь отобразится адрес на карте'))
-              ->columnSpanFull(),
+            ...self::getGeneral(),
             Forms\Components\TextInput::make('operation_type')
               ->hidden()
               ->default('Продам')
@@ -947,11 +891,6 @@ class EstateService
               ->label('Дата размещения объявления'),
             Forms\Components\DateTimePicker::make('date_end')
               ->label('Дата и время окончания размещения'),
-            Forms\Components\TextInput::make('contact_phone')
-              ->tel()
-              ->prefix('+')
-              ->placeholder('79876543219')
-              ->label('Контактный телефон'),
             Forms\Components\Select::make('contact_method')
               ->default('По телефону и в сообщениях')
               ->options([
@@ -1023,7 +962,6 @@ class EstateService
               ])
               ->label('Парковка'),
             Forms\Components\Select::make('bathroom_type')
-              ->multiple()
               ->options([
                 'Совмещённый' => 'Совмещённый',
                 'Раздельный' => 'Раздельный',
@@ -1068,7 +1006,6 @@ class EstateService
               ->options([
                 'Мебель' => 'Мебель',
                 'Бытовая техника' => 'Бытовая техника',
-                'Кондиционер' => 'Кондиционер',
                 'Гардеробная' => 'Гардеробная',
                 'Панорамные' => 'Панорамные ',
               ])

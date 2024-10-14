@@ -93,7 +93,6 @@
 
         <div class="mt-2 p-3">
         <p class="text-secondary lists__item-address"> {{ $estate->address }} </p>
-        <p>{{'Категория: ' . $types->where('slug', $estate->type->slug)->first()->name}}</p>
         <p class="mb-0">{{ number_format($estate->price, 0, '.', ' ') }} {{__('руб.')}}</p>
         <p class="text-secondary">{{ number_format(round($estate->price / $estate->square), 0, '.', ' ') }}
           {{__('руб./м²')}}
@@ -108,10 +107,7 @@
           </p>
         </div>
 
-        @if ($estate->estate_type_id == 1 || $estate->estate_type_id == 2)
-      <p class="mb-0 text-secondary">{{__('Стены')}} : {{ $estate->walls }}</p>
-      <p class="mb-0 text-secondary">{{__('Отделка')}} : {{ $estate->repair }}</p>
-    @endif
+        <p class="mb-0 text-secondary">Категория: {{ $estate->type->name }}</p>
         </div>
       </a>
       </div>

@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Clusters\Consultations\Resources\EstateViewingResource;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Get;
@@ -14,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use App\Filament\Services\EstateService;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class EstateResource extends Resource
 {
@@ -138,5 +139,16 @@ class EstateResource extends Resource
             'create' => Pages\CreateEstate::route('/create'),
             'edit' => Pages\EditEstate::route('/{record}/edit'),
         ];
+    }
+
+    public static function savePreviewMap($lat, $lon)
+    {
+        $response = Http::get("https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$lat},{$lon}~u:https://i.postimg.cc/90Ykr5df/marker-1.png~a:0.5,1");
+        if ($response->successful()) {
+            $fileName = 'img/maps/' . uniqid() . '.png';
+            Storage::disk('public')->put($fileName, $response->body());
+            return Storage::url($fileName);
+        }
+        return null;
     }
 }

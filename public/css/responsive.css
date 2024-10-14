@@ -11,7 +11,7 @@
 
 @media (max-width: 768px) {
     .lists__item.results {
-        flex-wrap: wrap;
+        display: block;
     }
     .lists__item-left {
         flex: 1;

@@ -16,6 +16,7 @@ Route::post("/consultation", [ConsultationController::class, "store"])->name("co
 Route::view("/personal-data", "personal-data")->name("personal-data");
 
 Route::get("/estates", [EstateController::class, "index"])->name("estate");
+Route::get("/estates/map", [EstateController::class, "map"])->name("estate.map");
 Route::get("/estates/{estate}", [EstateController::class, "show"])->name("estate.show");
 Route::post("/estate-viewing", [EstateController::class, "viewing"])->name("estate.viewing");
 

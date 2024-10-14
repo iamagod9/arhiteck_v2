@@ -11,14 +11,25 @@ use Illuminate\Http\Request;
 
 class EstateController extends Controller
 {
-    public function index(Request $request)
+    public function getParams(Request $request): array
     {
-        $type_slug = $request->get('type', '');
-        $rooms = $request->get('rooms', '');
-        $from_price = $request->get('from_price', '');
-        $to_price = $request->get('to_price', '');
-        $from_square = $request->get('from_square', '');
-        $to_square = $request->get('to_square', '');
+        return [
+            'type_slug' => $request->get('type', ''),
+            'rooms' => $request->get('rooms', ''),
+            'from_price' => $request->get('from_price', ''),
+            'to_price' => $request->get('to_price', ''),
+            'from_square' => $request->get('from_square', ''),
+            'to_square' => $request->get('to_square', ''),
+        ];
+    }
+    public function getEstatesByParams(array $params, bool $isMap = false)
+    {
+        $type_slug = $params['type_slug'];
+        $rooms = $params['rooms'];
+        $from_price = $params['from_price'];
+        $to_price = $params['to_price'];
+        $from_square = $params['from_square'];
+        $to_square = $params['to_square'];
 
         $query = Estate::query();
 
@@ -27,6 +38,7 @@ class EstateController extends Controller
                 $builder->where('slug', $type_slug);
             });
         }
+
         if ($rooms != '')
             $query->where('rooms', $rooms == "more" ? '>=' : "=", $rooms == "more" ? 4 : $rooms);
         if (!empty($from_price))
@@ -38,11 +50,19 @@ class EstateController extends Controller
         if (!empty($to_square))
             $query->where('square', "<=", $to_square);
 
-        $estates = $query->paginate(5)->withQueryString();
+        if ($isMap) {
+            return $query->get();
+        }
+        return $query->paginate(5)->withQueryString();
+    }
+    public function index(Request $request)
+    {
+        $params = self::getParams($request);
+        $estates = self::getEstatesByParams($params);
         $estates_total = $estates->total();
         $types = EstateType::all();
 
-        return view("estate.index", compact('estates', 'estates_total', 'types', 'type_slug', 'rooms', 'from_price', 'to_price', 'from_square', 'to_square'));
+        return view("estate.index", ['estates' => $estates, 'estates_total' => $estates_total, 'types' => $types, ...$params]);
     }
 
     public function show(Estate $estate, EstateType $type)
@@ -55,5 +75,12 @@ class EstateController extends Controller
         EstateViewing::create($request->validated());
 
         return response()->json(['message' => "Вы успешно записались на просмотр, ожидайте звонка сотрудника."], 201);
+    }
+
+    public function map(Request $request)
+    {
+        $params = self::getParams($request);
+        $estates = self::getEstatesByParams($params, true);
+        return view("estate.map", compact('estates'));
     }
 }

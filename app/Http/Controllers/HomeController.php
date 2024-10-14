@@ -13,7 +13,8 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $estates = Estate::paginate(9)->withQueryString();
+        $estates = Estate::paginate(9)->withQueryString()->sortByDesc('created_at');
+        ;
         $feedbacks = Feedback::where('is_published', 1)->get()->sortByDesc('created_at');
         $types = EstateType::all();
 

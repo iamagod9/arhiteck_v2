@@ -16,6 +16,7 @@ return new class extends Migration {
 
             $table->longText('description')->maxLength(7500);
             $table->string('video_url')->nullable();
+            $table->string('preview_infrastructure_area_img')->nullable();
             $table->string('avito_id')->nullable();
             $table->dateTime('date_begin')->nullable();
             $table->dateTime('date_end')->nullable();
@@ -47,7 +48,7 @@ return new class extends Migration {
             $table->json('courtyard')->nullable();
             $table->json('parking_type')->nullable();
             $table->json('room_type')->nullable();
-            $table->json('bathroom_type')->nullable();
+            $table->string('bathroom_type')->nullable();
             $table->float('ceiling_height', precision: 1)->nullable();
             $table->json('nd_additionally')->nullable();
             $table->integer('new_development_id')->nullable();
@@ -57,7 +58,7 @@ return new class extends Migration {
             $table->string('lat', 32)->nullable();
             $table->string('property_rights')->nullable();
             $table->string('decoration')->nullable();
-            $table->string('lease_appliances')->nullable();
+            $table->json('lease_appliances')->nullable();
             $table->string('video_file_url')->nullable();
             $table->string('repair_additionally')->nullable();
             $table->json('in_house')->nullable();

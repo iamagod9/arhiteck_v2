@@ -73,6 +73,12 @@ h6 {
     padding: 10px 20px 10px 20px;
 }
 
+.general-link:hover {
+    color: white;
+    background-color: #e67513;
+    border: #ae5f1b solid 1px;
+}
+
 .pagination {
     --bs-pagination-active-bg: #ff7700;
     --bs-pagination-color: var(--bs-pagination-active-bg);
@@ -272,7 +278,7 @@ h6 {
 .lists__item-images img {
     border-top-right-radius: 0;
     border-top-left-radius: 0;
-    height: auto;
+    height: 90px;
 }
 .lists__item-images img:first-child {
     border-bottom-left-radius: var(--bs-border-radius-sm);
@@ -525,7 +531,7 @@ h6 {
 .marker-popup__detail-img {
     display: block;
     width: 110px;
-    height: 100%;
+    height: 85px;
     object-fit: cover;
 }
 .marker-popup__detail-info p:last-child {

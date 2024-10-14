@@ -16,6 +16,7 @@ class Estate extends Model
     protected $fillable = [
         'description',
         'video_url',
+        'preview_infrastructure_area_img',
         'avito_id',
         'date_begin',
         'date_end',
@@ -84,8 +85,8 @@ class Estate extends Model
         'land_additionally' => 'array',
         'lease_multimedia' => 'array',
         'infrastructure' => 'array',
-        'bathroom_type' => 'array',
         'courtyard' => 'array',
+        'lease_appliances' => 'array',
         'parking_type' => 'array',
         'balcony_or_loggia' => 'array',
         'view_from_windows' => 'array',

@@ -7,7 +7,8 @@
             <h1 class="mb-0">Результаты поиска / {{ $estates_total }} недвижимости</h1>
             <hr class="opacity-75" />
 
-            <a href="map.html" class="btn btn-primary w-100 py-2 mb-3">Показать на карте</a>
+            <a href="{{ route('estate.map', Request::query()) }}" class="btn btn-primary w-100 py-2 mb-3">Показать на
+                карте</a>
 
             <div class="filters-wrapper" data-bs-toggle="modal" data-bs-target="#filters">
                 <div class="filters"><i class="fa-solid fa-filter"></i> Фильтр</div>
