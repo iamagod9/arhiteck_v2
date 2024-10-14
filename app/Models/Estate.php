@@ -95,6 +95,8 @@ class Estate extends Model
         'in_house' => 'array',
         'ss_additionally' => 'array',
         'furniture' => 'array',
+        'date_begin' => 'date',
+        'date_end' => 'date',
     ];
 
     public function user(): BelongsTo

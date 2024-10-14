@@ -18,8 +18,8 @@ return new class extends Migration {
             $table->string('video_url')->nullable();
             $table->string('preview_infrastructure_area_img')->nullable();
             $table->string('avito_id')->nullable();
-            $table->dateTime('date_begin')->nullable();
-            $table->dateTime('date_end')->nullable();
+            $table->timestamp('date_begin')->nullable();
+            $table->timestamp('date_end')->nullable();
             $table->string('listing_fee')->nullable();
             $table->string('ad_status')->nullable();
             $table->string('contact_phone')->nullable();

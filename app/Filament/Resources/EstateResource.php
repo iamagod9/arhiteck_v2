@@ -70,11 +70,6 @@ class EstateResource extends Resource
             ->columns([
                 tables\Columns\TextColumn::make('id')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->label('Дата создания'),
                 Tables\Columns\TextColumn::make('estate_type_id')
                     ->numeric()
                     ->sortable()
@@ -102,8 +97,12 @@ class EstateResource extends Resource
                         return $record->user->name;
                     })
                     ->label('Автор объявления'),
-                Tables\Columns\TextColumn::make('published_at')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime('d-m-Y')
+                    ->sortable()
+                    ->label('Дата создания'),
+                Tables\Columns\TextColumn::make('date_begin')
+                    ->dateTime('d-m-Y')
                     ->sortable()
                     ->label('Дата публикации'),
             ])

@@ -78,6 +78,7 @@ class EstateService
         ->schema([
           Forms\Components\FileUpload::make('video_url')
             ->nullable()
+            ->maxSize(30720)
             ->directory('videos/estates')
             ->label('Видеоролик'),
         ])
@@ -291,6 +292,7 @@ class EstateService
               ->date()
               ->label('Дата размещения объявления'),
             Forms\Components\DateTimePicker::make('date_end')
+              ->date()
               ->label('Дата и время окончания размещения'),
             Forms\Components\Select::make('contact_method')
               ->default('По телефону и в сообщениях')
