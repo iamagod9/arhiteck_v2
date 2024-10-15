@@ -11,24 +11,39 @@ use App\Models\Estate;
 
 class EstateService
 {
-  public static function getPoints($search, Set $set)
+  public static function getAddressAndPoints($search, $isReturnPoints = false): array
   {
     if (empty($search)) {
       return [];
     }
-    $response = Http::get('https://catalog.api.2gis.com/3.0/items/geocode', [
+
+    $response = Http::get('https://catalog.api.2gis.com/3.0/suggests', [
       'q' => $search,
       'type' => 'building',
+      'suggest_type' => 'address',
       'fields' => 'items.point',
       'key' => 'b0394cab-b1f6-45a8-b6e7-2e205fb132fd'
     ]);
+
     $json = $response->json();
+    if ($json['meta']['code'] != 200) {
+      return [];
+    }
+
     if (empty($json['result']['items'])) {
       return [];
     }
-    $set('lon', $json['result']['items'][0]['point']['lon']);
-    $set('lat', $json['result']['items'][0]['point']['lat']);
 
+    $items = $json['result']['items'];
+
+    if ($isReturnPoints) {
+      return [
+        'lon' => $items[0]["point"]["lon"],
+        'lat' => $items[0]["point"]["lat"]
+      ];
+    }
+
+    return collect($items)->pluck('full_name', 'search_attributes.suggested_text')->toArray();
   }
 
   public static function getMedia(): array
@@ -99,12 +114,22 @@ class EstateService
         ->maxLength(7500)
         ->columnSpan(3)
         ->label('Описание'),
-      Forms\Components\TextInput::make('address')
+      Forms\Components\Select::make('address')
         ->required()
-        ->maxLength(255)
-        ->label('Адрес')->live(debounce: 500)
-        ->afterStateUpdated(fn($state, Set $set) => self::getPoints($state, $set))
-        ->columnSpan(3),
+        ->label('Адрес')
+        ->searchable()
+        ->getSearchResultsUsing(fn (string $search): array => self::getAddressAndPoints($search))
+        ->getOptionLabelUsing(fn ($value): ?string => $value)
+        ->live()
+        ->searchDebounce(1000)
+        ->afterStateUpdated(function ($state, Set $set) {
+          $points = self::getAddressAndPoints($state, true);
+          if (count($points) > 0) {
+            $set('lat', $points['lat']);
+            $set('lon', $points['lon']);
+          }
+        })
+        ->columnSpanFull(),
       Forms\Components\Hidden::make('lon')
         ->dehydrated(),
       Forms\Components\Hidden::make('lat')
