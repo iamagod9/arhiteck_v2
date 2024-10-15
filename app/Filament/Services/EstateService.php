@@ -43,7 +43,7 @@ class EstateService
       ];
     }
 
-    return collect($items)->pluck('full_name', 'search_attributes.suggested_text')->toArray();
+    return collect($items)->pluck('full_name', 'full_name')->toArray();
   }
 
   public static function getMedia(): array
@@ -136,7 +136,7 @@ class EstateService
         ->dehydrated(),
       Forms\Components\Placeholder::make('map')
         ->label('Местоположение на карте')
-        ->content(fn($get) => new HtmlString("<img src='https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$get('lat')},{$get('lon')}~u:https://i.postimg.cc/90Ykr5df/marker-1.png~a:0.5,1' style='width: 100%;'/>"))
+        ->content(fn($get) => new HtmlString("<img src='https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$get('lat')},{$get('lon')}' style='width: 100%;'/>"))
         ->columnSpan(3)
         ->hidden(fn($get) => empty ($get('lat')) || empty ($get('lon'))),
       // Forms\Components\TextInput::make('contact_phone')
