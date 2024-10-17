@@ -26,7 +26,7 @@
       <a class="marker-popup__detail p-2 column-gap-2 overflow-hidden bg-body box-shadow rounded-1 text-reset" href="{{ route('estate.show', $estate->id) }}" target="_blank" rel="noopener noreferrer">
       <img src="{{ asset('storage/' . $estate->images[0]->url[0]) }}" class="marker-popup__detail-img rounded-1" />
       <div class="marker-popup__detail-info">
-      <p class="mb-0">{{ $estate->rooms }}-комн. кв.</p>
+      <p class="mb-0">{{ !empty($estate->rooms) ? $estate->rooms . '-комн. кв.' : $estate->type->name }}</p>
       <p class="mb-0"><span class="fw-bold">{{ number_format($estate->price, 0, '.', ' ') }} руб.</span> {{ $estate->square }} м²</p>
       <p class="mb-0">{{ $estate->address }}</div>
       </div>

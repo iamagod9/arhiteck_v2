@@ -90,7 +90,6 @@ class Estate extends Model
         'parking_type' => 'array',
         'balcony_or_loggia' => 'array',
         'view_from_windows' => 'array',
-        'room_type' => 'array',
         'nd_additionally' => 'array',
         'in_house' => 'array',
         'ss_additionally' => 'array',

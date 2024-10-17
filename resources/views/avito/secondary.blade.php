@@ -6,7 +6,7 @@
     <DateEnd>{{$estate->date_end}}</DateEnd>
     <ListingFee>{{$estate->listing_fee}}</ListingFee>
     <AdStatus>{{$estate->ad_status}}</AdStatus>
-    <AvitoId>{{uniqid('se')}}</AvitoId>
+    <AvitoId>{{rand(1000, 99999)}}</AvitoId>
     <ManagerName>{{$estate->user->name}}</ManagerName>
     <ContactPhone>{{$estate->contact_phone}}</ContactPhone>
     <Description>{{$estate->description}}</Description>
@@ -26,8 +26,16 @@
     <CallsDevices />
     <OperationType>{{$estate->operation_type}}</OperationType>
     <SafeDemonstration />
-    <BalconyOrLoggiaMulti>{{implode(' | ', $estate->balcony_or_loggia)}}</BalconyOrLoggiaMulti>
-    <LeaseAppliances>{{implode(' | ', $estate->lease_appliances)}}</LeaseAppliances>
+    @foreach($estate->balcony_or_loggia as $balcony_or_loggia)
+    <BalconyOrLoggiaMulti>
+      {{$balcony_or_loggia}}
+    </BalconyOrLoggiaMulti>
+  @endforeach
+    @foreach($estate->lease_appliances as $lease_appliances)
+    <LeaseAppliances>
+      {{$lease_appliances}}
+    </LeaseAppliances>
+  @endforeach
     <VideoFileURL>{{ asset('storage/' . $estate->video_url) }}</VideoFileURL>
     <MarketType>{{$estate->market_type}}</MarketType>
     <HouseType>{{$estate->house_type}}</HouseType>
@@ -39,24 +47,52 @@
     <LivingSpace>{{$estate->living_space}}</LivingSpace>
     <ApartmentNumber>{{$estate->apartment_number}}</ApartmentNumber>
     <Status>{{$estate->status}}</Status>
-    <ViewFromWindows>{{implode(' | ', $estate->view_from_windows)}}</ViewFromWindows>
+    @foreach ($estate->view_from_windows as $view_from_windows)
+    <ViewFromWindows>
+      {{$view_from_windows}}
+    </ViewFromWindows>
+  @endforeach
     <PassengerElevator>{{$estate->passenger_elevator}}</PassengerElevator>
     <FreightElevator>{{$estate->freight_elevator}}</FreightElevator>
-    <Courtyard>{{implode(' | ', $estate->courtyard)}}</Courtyard>
-    <Parking>{{implode(' | ', $estate->parking_type)}}</Parking>
-    <RoomType>{{implode(' | ', $estate->room_type)}}</RoomType>
+    @foreach ($estate->courtyard as $courtyard)
+    <Courtyard>
+      {{$courtyard}}
+    </Courtyard>
+  @endforeach
+    @foreach ($estate->parking_type as $parking_type)
+    <Parking>
+      {{$parking_type}}
+    </Parking>
+  @endforeach
+    <RoomType>{{$room_type}}</RoomType>
     <Renovation>{{$estate->renovation}}</Renovation>
-    <BathroomMulti>{{implode(' | ', $estate->bathroom_type)}}</BathroomMulti>
+    <BathroomMulti>{{$estate->bathroom_type}}</BathroomMulti>
     <SaleOptions />
     <CeilingHeight>{{$estate->ceiling_height}}</CeilingHeight>
-    <NDAdditionally>{{implode(' | ', $estate->nd_additionally)}}</NDAdditionally>
+    @foreach ($estate->nd_additionally as $nd_additionally)
+    <NDAdditionally>
+      {{$nd_additionally}}
+    </NDAdditionally>
+  @endforeach
     <PropertyRights>{{$estate->property_rights}}</PropertyRights>
     <RepairAdditionally>{{$estate->repair_additionally}}</RepairAdditionally>
     <RenovationProgram />
-    <InHouse>{{implode(' | ', $estate->in_house)}}</InHouse>
-    <SSAdditionally>{{implode(' | ', $estate->ss_additionally)}}</SSAdditionally>
+    @foreach ($estate->in_house as $in_house)
+    <InHouse>
+      {{$in_house}}
+    </InHouse>
+  @endforeach
+    @foreach ($estate->ss_additionally as $ss_additionally)
+    <SSAdditionally>
+      {{$ss_additionally}}
+    </SSAdditionally>
+  @endforeach
     <DealType>{{$estate->deal_type}}</DealType>
-    <Furniture>{{implode(' | ', $estate->furniture)}}</Furniture>
+    @foreach ($estate->furniture as $furniture)
+    <Furniture>
+      {{$furniture}}
+    </Furniture>
+  @endforeach
     <BuiltYear>{{$estate->built_year}}</BuiltYear>
     <PhotoSuggestByHouse />
     <EgrnExtractionLink />

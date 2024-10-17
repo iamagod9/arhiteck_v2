@@ -142,7 +142,7 @@ class EstateResource extends Resource
 
     public static function savePreviewMap($lat, $lon)
     {
-        $response = Http::get("https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$lat},{$lon}~u:https://i.postimg.cc/90Ykr5df/marker-1.png~a:0.5,1");
+        $response = Http::get("https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$lat},{$lon}");
         if ($response->successful()) {
             $fileName = 'img/maps/' . uniqid() . '.png';
             Storage::disk('public')->put($fileName, $response->body());

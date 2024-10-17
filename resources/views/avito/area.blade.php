@@ -13,7 +13,7 @@
     <DateEnd>{{$estate->date_end}}</DateEnd>
     <ListingFee>{{$estate->listing_fee}}</ListingFee>
     <AdStatus>{{$estate->ad_status}}</AdStatus>
-    <AvitoId>{{uniqid('ae')}}</AvitoId>
+    <AvitoId>{{rand(1000, 99999)}}</AvitoId>
     <ManagerName>{{$estate->user->name}}</ManagerName>
     <ContactPhone>{{$estate->contact_phone}}</ContactPhone>
     <Address>{{$estate->address}}</Address>

@@ -47,7 +47,7 @@ return new class extends Migration {
             $table->string('freight_elevator')->nullable();
             $table->json('courtyard')->nullable();
             $table->json('parking_type')->nullable();
-            $table->json('room_type')->nullable();
+            $table->string('room_type')->nullable();
             $table->string('bathroom_type')->nullable();
             $table->float('ceiling_height', precision: 1)->nullable();
             $table->json('nd_additionally')->nullable();

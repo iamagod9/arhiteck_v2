@@ -11,24 +11,39 @@ use App\Models\Estate;
 
 class EstateService
 {
-  public static function getPoints($search, Set $set)
+  public static function getAddressAndPoints($search, $isReturnPoints = false): array
   {
     if (empty($search)) {
       return [];
     }
-    $response = Http::get('https://catalog.api.2gis.com/3.0/items/geocode', [
+
+    $response = Http::get('https://catalog.api.2gis.com/3.0/suggests', [
       'q' => $search,
       'type' => 'building',
+      'suggest_type' => 'address',
       'fields' => 'items.point',
       'key' => 'b0394cab-b1f6-45a8-b6e7-2e205fb132fd'
     ]);
+
     $json = $response->json();
+    if ($json['meta']['code'] != 200) {
+      return [];
+    }
+
     if (empty($json['result']['items'])) {
       return [];
     }
-    $set('lon', $json['result']['items'][0]['point']['lon']);
-    $set('lat', $json['result']['items'][0]['point']['lat']);
 
+    $items = $json['result']['items'];
+
+    if ($isReturnPoints) {
+      return [
+        'lon' => $items[0]["point"]["lon"],
+        'lat' => $items[0]["point"]["lat"]
+      ];
+    }
+
+    return collect($items)->pluck('full_name', 'full_name')->toArray();
   }
 
   public static function getMedia(): array
@@ -99,11 +114,21 @@ class EstateService
         ->maxLength(7500)
         ->columnSpan(3)
         ->label('Описание'),
-      Forms\Components\TextInput::make('address')
+      Forms\Components\Select::make('address')
         ->required()
-        ->maxLength(255)
-        ->label('Адрес')->live(debounce: 500)
-        ->afterStateUpdated(fn($state, Set $set) => self::getPoints($state, $set))
+        ->label('Адрес')
+        ->searchable()
+        ->getSearchResultsUsing(fn(string $search): array => self::getAddressAndPoints($search))
+        ->getOptionLabelUsing(fn($value): ?string => $value)
+        ->live()
+        ->searchDebounce(1000)
+        ->afterStateUpdated(function ($state, Set $set) {
+          $points = self::getAddressAndPoints($state, true);
+          if (count($points) > 0) {
+            $set('lat', $points['lat']);
+            $set('lon', $points['lon']);
+          }
+        })
         ->columnSpan(3),
       Forms\Components\Hidden::make('lon')
         ->dehydrated(),
@@ -111,7 +136,7 @@ class EstateService
         ->dehydrated(),
       Forms\Components\Placeholder::make('map')
         ->label('Местоположение на карте')
-        ->content(fn($get) => new HtmlString("<img src='https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$get('lat')},{$get('lon')}~u:https://i.postimg.cc/90Ykr5df/marker-1.png~a:0.5,1' style='width: 100%;'/>"))
+        ->content(fn($get) => new HtmlString("<img src='https://static.maps.2gis.com/1.0?s=900,400&z=16&pt={$get('lat')},{$get('lon')}' style='width: 100%;'/>"))
         ->columnSpan(3)
         ->hidden(fn($get) => empty ($get('lat')) || empty ($get('lon'))),
       // Forms\Components\TextInput::make('contact_phone')
@@ -168,19 +193,10 @@ class EstateService
           ->icon('heroicon-o-shield-exclamation')
           ->schema([
             ...self::getGeneral(),
-            Forms\Components\Select::make('operation_type')
-              ->options([
-                'Продам' => 'Продам',
-              ])
-              ->default('Продам')
-              ->required()
-              ->label('Тип объявления'),
-            Forms\Components\TextInput::make('category')
-              ->hidden()
-              ->default('Квартиры')
-              ->required()
-              ->maxLength(255)
-              ->label('Категория недвижимости'),
+            Forms\Components\Hidden::make('operation_type')
+              ->default('Продам'),
+            Forms\Components\Hidden::make('category')
+              ->default('Квартиры'),
             Forms\Components\Select::make('user_id')
               ->required()
               ->relationship('user', 'name')
@@ -193,12 +209,8 @@ class EstateService
               ->maxValue(9999999999)
               ->postfix('руб. ')
               ->label('Цена'),
-            Forms\Components\TextInput::make('market_type')
-              ->hidden()
-              ->default('Новостройка')
-              ->required()
-              ->maxLength(255)
-              ->label('Принадлежность квартиры к рынку'),
+            Forms\Components\Hidden::make('market_type')
+              ->default('Новостройка'),
             Forms\Components\Select::make('house_type')
               ->options([
                 'Кирпичный' => 'Кирпичный',
@@ -256,6 +268,8 @@ class EstateService
               ->label('Статус недвижимости'),
             Forms\Components\TextInput::make('new_development_id')
               ->required()
+              ->minValue(10000)
+              ->maxValue(99999)
               ->numeric()
               ->label('Объект новостройки'),
             Forms\Components\Select::make('property_rights')
@@ -356,7 +370,6 @@ class EstateService
               ])
               ->label('Парковка'),
             Forms\Components\Select::make('room_type')
-              ->multiple()
               ->options([
                 'Изолированные' => 'Изолированные',
                 'Смежные' => 'Смежные',
@@ -416,19 +429,10 @@ class EstateService
               ->required()
               ->relationship('user', 'name')
               ->label('Автор объявления'),
-            Forms\Components\Select::make('operation_type')
-              ->options([
-                'Продам' => 'Продам',
-              ])
-              ->default('Продам')
-              ->label('Тип объявления'),
-            Forms\Components\Select::make('category')
-              ->options([
-                'Земельные участки' => 'Земельные участки',
-              ])
-              ->default('Земельные участки')
-              ->required()
-              ->label('Категория недвижимости'),
+            Forms\Components\Hidden::make('operation_type')
+              ->default('Продам'),
+            Forms\Components\Hidden::make('category')
+              ->default('Земельные участки'),
             Forms\Components\TextInput::make('price')
               ->placeholder('От 1 до 9999999999')
               ->required()
@@ -502,16 +506,10 @@ class EstateService
           ->icon('heroicon-o-shield-exclamation')
           ->schema([
             ...self::getGeneral(),
-            Forms\Components\TextInput::make('operation_type')
-              ->default('Продам')
-              ->required()
-              ->maxLength(255)
-              ->label('Тип объявления'),
-            Forms\Components\TextInput::make('category')
-              ->default('Дома, дачи, коттеджи')
-              ->required()
-              ->maxLength(255)
-              ->label('Категория недвижимости'),
+            Forms\Components\Hidden::make('operation_type')
+              ->default('Продам'),
+            Forms\Components\Hidden::make('category')
+              ->default('Дома, дачи, коттеджи'),
             Forms\Components\Select::make('user_id')
               ->required()
               ->relationship('user', 'name')
@@ -749,18 +747,10 @@ class EstateService
           ->icon('heroicon-o-shield-exclamation')
           ->schema([
             ...self::getGeneral(),
-            Forms\Components\TextInput::make('operation_type')
-              ->hidden()
-              ->default('Продам')
-              ->required()
-              ->maxLength(255)
-              ->label('Тип объявления'),
-            Forms\Components\TextInput::make('category')
-              ->hidden()
-              ->default('Квартиры')
-              ->required()
-              ->maxLength(255)
-              ->label('Категория недвижимости'),
+            Forms\Components\Hidden::make('operation_type')
+              ->default('Продам'),
+            Forms\Components\Hidden::make('category')
+              ->default('Квартиры'),
             Forms\Components\Select::make('user_id')
               ->required()
               ->relationship('user', 'name')
@@ -773,12 +763,8 @@ class EstateService
               ->maxValue(9999999999)
               ->postfix('руб. ')
               ->label('Цена'),
-            Forms\Components\TextInput::make('market_type')
-              ->hidden()
-              ->default('Вторичка')
-              ->required()
-              ->maxLength(255)
-              ->label('Принадлежность квартиры к рынку'),
+            Forms\Components\Hidden::make('market_type')
+              ->default('Вторичка'),
             Forms\Components\Select::make('house_type')
               ->options([
                 'Кирпичный' => 'Кирпичный',
@@ -842,7 +828,6 @@ class EstateService
                 'Изолированные' => 'Изолированные',
                 'Смежные' => 'Смежные',
               ])
-              ->multiple()
               ->label('Тип комнат'),
             Forms\Components\Select::make('deal_type')
               ->required()
@@ -851,13 +836,15 @@ class EstateService
                 'Альтернативная' => 'Альтернативная',
               ])
               ->label('Тип сделки'),
-            Forms\Components\Select::make('category')
+            Forms\Components\Select::make('status')
               ->options([
                 'Квартира' => 'Квартира',
                 'Апартаменты' => 'Апартаменты',
               ])
               ->required()
-              ->label('Категория недвижимости'),
+              ->label('Статус недвижимости'),
+            Forms\Components\Hidden::make('category')
+              ->default('Квартиры'),
             Forms\Components\Select::make('renovation')
               ->required()
               ->options([
@@ -1009,7 +996,7 @@ class EstateService
                 'Мебель' => 'Мебель',
                 'Бытовая техника' => 'Бытовая техника',
                 'Гардеробная' => 'Гардеробная',
-                'Панорамные' => 'Панорамные ',
+                'Панорамные окна' => 'Панорамные окна',
               ])
               ->label('Дополнительные опции'),
             Forms\Components\Select::make('furniture')

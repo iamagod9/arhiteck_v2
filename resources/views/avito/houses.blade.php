@@ -13,7 +13,7 @@
     <DateEnd>{{$estate->date_end}}</DateEnd>
     <ListingFee>{{$estate->listing_fee}}</ListingFee>
     <AdStatus>{{$estate->ad_status}}</AdStatus>
-    <AvitoId>{{uniqid('he')}}</AvitoId>
+    <AvitoId>{{rand(1000, 99999)}}</AvitoId>
     <ManagerName>{{$estate->user->name}}</ManagerName>
     <ContactPhone>{{$estate->contact_phone}}</ContactPhone>
     <Address>{{$estate->address}}</Address>
@@ -27,7 +27,9 @@
     <VideoFileURL>{{ asset('storage/' . $estate->video_url) }}</VideoFileURL>
     <OperationType>{{$estate->operation_type}}</OperationType>
     <SafeDemonstration />
-    <LandAdditionally>{{implode(' | ', $estate->land_additionally)}}</LandAdditionally>
+    @foreach ($estate->land_additionally as $land_additionally)
+    <LandAdditionally>{{$land_additionally}}</LandAdditionally>
+  @endforeach
     <BathroomMulti>{{$estate->bathroom_type}}</BathroomMulti>
     <HouseAdditionally>{{$estate->house_additionally}}</HouseAdditionally>
     <HouseServices />
@@ -38,11 +40,15 @@
     <WaterSupply>{{$estate->water_supply}}</WaterSupply>
     <Sewerage>{{$estate->sewerage}}</Sewerage>
     <TransportAccessibility />
-    <Infrastructure>{{implode(' | ', $estate->infrastructure)}}</Infrastructure>
+    @foreach ($estate->infrastructure as $infrastructure)
+    <Infrastructure>{{$infrastructure}}</Infrastructure>
+  @endforeach
     <ParkingType>{{$estate->parking_type}}</ParkingType>
     <Rooms>{{$estate->rooms}}</Rooms>
     <BuiltYear>{{$estate->built_year}}</BuiltYear>
-    <LeaseMultimedia>{{implode(' | ', $estate->lease_multimedia)}}</LeaseMultimedia>
+    @foreach ($estate->lease_multimedia as $lease_multimedia)
+    <LeaseMultimedia>{{$lease_multimedia}}</LeaseMultimedia>
+  @endforeach
     <PropertyRights>{{$estate->property_rights}}</PropertyRights>
     <ObjectType>{{$estate->object_type}}</ObjectType>
     <Floors>{{$estate->floors}}</Floors>
