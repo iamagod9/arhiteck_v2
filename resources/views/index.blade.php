@@ -30,7 +30,7 @@
                 <option value="3">3</option>
                 <option value="more">4+</option>
               </select>
-              <label for="bedSelect">Комнатность</label>
+              <label for="bedSelect">Кол-во комнат</label>
             </div>
           </div>
         </div>

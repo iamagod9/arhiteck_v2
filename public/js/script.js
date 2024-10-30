@@ -55,6 +55,17 @@ let validationForm = (form) => {
     })
 }
 
+document.getElementById('typeSelect').addEventListener('change', () => {
+    let inputField = document.getElementById('bedSelect');
+
+    if (document.getElementById('typeSelect').value === 'uchastok') {
+        inputField.disabled = true;
+        inputField.value = '';
+    } else {
+        inputField.disabled = false;
+    };
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     validationForm(document.querySelector('.form-feedback-modal'));
 
